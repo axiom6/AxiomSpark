@@ -19,12 +19,12 @@ package org.apache.spark.examples
 
 import java.util.Random
 
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.HashSet
+import scala.collection.mutable.{ HashMap => MutableHashMap }
+import scala.collection.mutable.{ HashSet => MutableHashSet }
 
 import breeze.linalg.{Vector, DenseVector, squaredDistance}
 
-import org.apache.spark.SparkContext._
+//import org.apache.spark.SparkContext._
 
 /**
  * K-means clustering.
@@ -47,8 +47,8 @@ object LocalKMeans {
     Array.tabulate(N)(generatePoint)
   }
 
-  def closestPoint(p: Vector[Double], centers: HashMap[Int, Vector[Double]]): Int = {
-    var index = 0
+  def closestPoint(p: Vector[Double], centers: MutableHashMap[Int, Vector[Double]]): Int = {
+  //val index = 0
     var bestIndex = 0
     var closest = Double.PositiveInfinity
 
@@ -76,10 +76,10 @@ object LocalKMeans {
 
     showWarning()
 
-    val data = generateData
-    var points = new HashSet[Vector[Double]]
-    var kPoints = new HashMap[Int, Vector[Double]]
-    var tempDist = 1.0
+    val data    = generateData
+    val points  = new MutableHashSet[Vector[Double]]
+    val kPoints = new MutableHashMap[Int, Vector[Double]]
+    val tempDist = 1.0
 
     while (points.size < K) {
       points.add(data(rand.nextInt(N)))
@@ -93,20 +93,20 @@ object LocalKMeans {
     println("Initial centers: " + kPoints)
 
     while(tempDist > convergeDist) {
-      var closest = data.map (p => (closestPoint(p, kPoints), (p, 1)))
+      val closest = data.map (p => (closestPoint(p, kPoints), (p, 1)))
 
-      var mappings = closest.groupBy[Int] (x => x._1)
+      val mappings = closest.groupBy[Int] (x => x._1)
 
-      var pointStats = mappings.map { pair =>
+      val pointStats = mappings.map { pair =>
         pair._2.reduceLeft [(Int, (Vector[Double], Int))] {
           case ((id1, (x1, y1)), (id2, (x2, y2))) => (id1, (x1 + x2, y1 + y2))
         }
       }
 
-      var newPoints = pointStats.map {mapping =>
+      val newPoints = pointStats.map {mapping =>
         (mapping._1, mapping._2._1 * (1.0 / mapping._2._2))}
 
-      tempDist = 0.0
+      var tempDist = 0.0
       for (mapping <- newPoints) {
         tempDist += squaredDistance(kPoints.get(mapping._1).get, mapping._2)
       }

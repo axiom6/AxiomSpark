@@ -17,7 +17,7 @@
 
 package org.apache.spark.examples.streaming
 
-import java.util.HashMap
+//import java.util.HashMap
 
 import org.apache.kafka.clients.producer.{ProducerConfig, KafkaProducer, ProducerRecord}
 
@@ -77,7 +77,7 @@ object KafkaWordCountProducer {
     val Array(brokers, topic, messagesPerSec, wordsPerMessage) = args
 
     // Zookeeper connection properties
-    val props = new HashMap[String, Object]()
+    val props = new java.util.HashMap[String, Object]()
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers)
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
       "org.apache.kafka.common.serialization.StringSerializer")

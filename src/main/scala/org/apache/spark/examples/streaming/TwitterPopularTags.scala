@@ -18,7 +18,7 @@
 package org.apache.spark.examples.streaming
 
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.SparkContext._
+//import org.apache.spark.SparkContext._
 import org.apache.spark.streaming.twitter._
 import org.apache.spark.SparkConf
 
@@ -56,13 +56,14 @@ object TwitterPopularTags {
 
     val hashTags = stream.flatMap(status => status.getText.split(" ").filter(_.startsWith("#")))
 
+    val boolFalse = false
     val topCounts60 = hashTags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(60))
                      .map{case (topic, count) => (count, topic)}
-                     .transform(_.sortByKey(false))
+                     .transform(_.sortByKey(boolFalse))
 
     val topCounts10 = hashTags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(10))
                      .map{case (topic, count) => (count, topic)}
-                     .transform(_.sortByKey(false))
+                     .transform(_.sortByKey(boolFalse))
 
 
     // Print popular hashtags

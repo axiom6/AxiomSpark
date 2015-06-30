@@ -21,7 +21,7 @@ import scala.util.Random
 import scala.collection.mutable
 
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
+//import org.apache.spark.SparkContext._
 
 /**
  * Transitive closure on a graph.

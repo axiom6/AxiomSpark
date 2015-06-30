@@ -20,7 +20,7 @@ package org.apache.spark.examples
 import java.util.Random
 
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
+//import org.apache.spark.SparkContext._
 
 /**
   * Usage: SimpleSkewedGroupByTest [numMappers] [numKVPairs] [valSize] [numReducers] [ratio]
@@ -28,18 +28,18 @@ import org.apache.spark.SparkContext._
 object SimpleSkewedGroupByTest {
   def main(args: Array[String]) {
 
-    val sparkConf = new SparkConf().setAppName("SimpleSkewedGroupByTest")
-    var numMappers = if (args.length > 0) args(0).toInt else 2
-    var numKVPairs = if (args.length > 1) args(1).toInt else 1000
-    var valSize = if (args.length > 2) args(2).toInt else 1000
-    var numReducers = if (args.length > 3) args(3).toInt else numMappers
-    var ratio = if (args.length > 4) args(4).toInt else 5.0
+    val sparkConf   = new SparkConf().setAppName("SimpleSkewedGroupByTest")
+    val numMappers  = if (args.length > 0) args(0).toInt else 2
+    val numKVPairs  = if (args.length > 1) args(1).toInt else 1000
+    val valSize     = if (args.length > 2) args(2).toInt else 1000
+    val numReducers = if (args.length > 3) args(3).toInt else numMappers
+    val ratio       = if (args.length > 4) args(4).toInt else 5.0
 
     val sc = new SparkContext(sparkConf)
 
     val pairs1 = sc.parallelize(0 until numMappers, numMappers).flatMap { p =>
       val ranGen = new Random
-      var result = new Array[(Int, Array[Byte])](numKVPairs)
+      val result = new Array[(Int, Array[Byte])](numKVPairs)
       for (i <- 0 until numKVPairs) {
         val byteArr = new Array[Byte](valSize)
         ranGen.nextBytes(byteArr)
@@ -54,9 +54,9 @@ object SimpleSkewedGroupByTest {
         }
       }
       result
-    }.cache
+    }.cache()
     // Enforce that everything has been calculated and in cache
-    pairs1.count
+    pairs1.count()
 
     println("RESULT: " + pairs1.groupByKey(numReducers).count)
     // Print how many keys each reducer got (for debugging)

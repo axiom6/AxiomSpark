@@ -71,8 +71,9 @@ object StatefulNetworkWordCount {
 
     // Update the cumulative count using updateStateByKey
     // This will give a Dstream made of state (which is the cumulative count of the words)
+    val boolTrue = true
     val stateDstream = wordDstream.updateStateByKey[Int](newUpdateFunc,
-      new HashPartitioner (ssc.sparkContext.defaultParallelism), true, initialRDD)
+      new HashPartitioner (ssc.sparkContext.defaultParallelism), boolTrue, initialRDD)
     stateDstream.print()
     ssc.start()
     ssc.awaitTermination()

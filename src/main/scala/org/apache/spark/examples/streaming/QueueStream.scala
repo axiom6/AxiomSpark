@@ -17,7 +17,7 @@
 
 package org.apache.spark.examples.streaming
 
-import scala.collection.mutable.SynchronizedQueue
+//import scala.collection.mutable.SynchronizedQueue
 
 import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
@@ -34,7 +34,7 @@ object QueueStream {
 
     // Create the queue through which RDDs can be pushed to
     // a QueueInputDStream
-    val rddQueue = new SynchronizedQueue[RDD[Int]]()
+    val rddQueue = new scala.collection.mutable.SynchronizedQueue[RDD[Int]]()
 
     // Create the QueueInputDStream and use it do some processing
     val inputStream = ssc.queueStream(rddQueue)

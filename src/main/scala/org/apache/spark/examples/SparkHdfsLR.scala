@@ -43,8 +43,8 @@ object SparkHdfsLR {
 
   def parsePoint(line: String): DataPoint = {
     val tok = new java.util.StringTokenizer(line, " ")
-    var y = tok.nextToken.toDouble
-    var x = new Array[Double](D)
+    val y = tok.nextToken.toDouble
+    val x = new Array[Double](D)
     var i = 0
     while (i < D) {
       x(i) = tok.nextToken.toDouble; i += 1
@@ -78,7 +78,7 @@ object SparkHdfsLR {
         Seq(new InputFormatInfo(conf, classOf[org.apache.hadoop.mapred.TextInputFormat], inputPath))
       ))
     val lines = sc.textFile(inputPath)
-    val points = lines.map(parsePoint _).cache()
+    val points = lines.map( line => parsePoint(line) ).cache()
     val ITERATIONS = args(1).toInt
 
     // Initialize w to a random value

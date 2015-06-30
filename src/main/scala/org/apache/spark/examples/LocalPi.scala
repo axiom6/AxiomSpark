@@ -19,8 +19,8 @@ package org.apache.spark.examples
 
 import scala.math.random
 
-import org.apache.spark._
-import org.apache.spark.SparkContext._
+//import org.apache.spark._
+//import org.apache.spark.SparkContext._
 
 object LocalPi {
   def main(args: Array[String]) {
